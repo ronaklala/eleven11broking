@@ -12,6 +12,8 @@ import {
   ArrowRight,
   Globe2,
 } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 const services = [
   {
@@ -63,6 +65,8 @@ const whyChoose = [
 ];
 
 function Navbar() {
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   return (
     <nav className="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-slate-950/70 border-b border-slate-800">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
@@ -70,23 +74,70 @@ function Navbar() {
           <h1 className="text-2xl font-black gradient-text">
             Eleven 11 Capital
           </h1>
+
           <p className="text-xs text-slate-500 tracking-widest uppercase">
             Insurance & Capital Broking
           </p>
         </div>
 
-        <div className="flex gap-8 text-slate-300 font-medium">
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex gap-8 text-slate-300 font-medium">
           <Link className="hover:text-cyan-400 transition" to="/">
             Home
           </Link>
+
           <Link className="hover:text-cyan-400 transition" to="/services">
             Services
           </Link>
+
           <Link className="hover:text-cyan-400 transition" to="/contact">
             Contact
           </Link>
         </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setMobileMenu(!mobileMenu)}
+          className="md:hidden text-white"
+        >
+          {mobileMenu ? <X size={30} /> : <Menu size={30} />}
+        </button>
       </div>
+
+      {/* MOBILE MENU */}
+      {mobileMenu && (
+        <motion.div
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="md:hidden px-6 pb-6"
+        >
+          <div className="flex flex-col gap-4 bg-slate-900/95 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+            <Link
+              to="/"
+              onClick={() => setMobileMenu(false)}
+              className="text-slate-300 hover:text-cyan-400 transition"
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/services"
+              onClick={() => setMobileMenu(false)}
+              className="text-slate-300 hover:text-cyan-400 transition"
+            >
+              Services
+            </Link>
+
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenu(false)}
+              className="text-slate-300 hover:text-cyan-400 transition"
+            >
+              Contact
+            </Link>
+          </div>
+        </motion.div>
+      )}
     </nav>
   );
 }
